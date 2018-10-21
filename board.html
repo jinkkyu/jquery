@@ -1,0 +1,675 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="initial-scale=1.0, width=device-width">
+<title>2018 러시아월드컵 안내</title>
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta charset="utf-8">
+        <!-- meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"/ -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <!-- Bootstrap -->
+        <link href="./bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요한) -->
+		<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+
+
+
+	<!-- 제이쿼리모바일, 제이쿼리, 폰갭 라이브러리 파일(다운로드 방식)  -->
+<link rel="stylesheet" href="jquery.mobile/jquery.mobile-1.4.5.min.css"/>
+<script src="jquery.mobile/jquery-1.11.1.min.js"></script>
+<script src="jquery.mobile/jquery.mobile-1.4.5.min.js"></script>
+<script src="cordova.js"></script>
+
+	<!-- 구글맵 API 라이브러리 파일(CDN 방식)  -->
+<script src="http://maps.google.com/maps/api/js?sensor=true&language=ko"></script>
+
+	<!-- jquery-ui-map 플러그인 라이브러리 파일(다운로드 방식)  -->
+<script src="ui/min/jquery.ui.map.full.min.js"></script>
+<script src="ui/jquery.ui.map.extensions.js"></script>
+
+	<!-- 사용자 정의 자바스크립트 파일  -->
+<script src="dbHandle.js"></script>
+<script src="photoHandle.js"></script>
+<script src="cafeDisplay.js"></script>
+
+<!-- 구글 로그인  -->
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="286548472871-jrshaaeparn359gksvg979e3ubljsla7.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<script>
+	// 전역변수
+	var db = null;     		// DB 객체
+	var varcafeName;   		// 현재 선수 이름
+	var recordSet = null; 	// 현재 레코드셋
+	var varPosition = null; // 현재 레코드
+	var flag;  					// 입력/수정 페이지 식별
+
+	$(document).ready(function() {
+	// 폰갭 API 초기화
+		initPhoneGap();
+
+ 	// DB, Table 열기
+	    openDB();
+	    createTable();
+
+ 	// 이벤트 함수 정의
+		$('#btnAdd').click(function() {
+			insertcafe();
+		});
+	   $('#btnAddCancel').click( function(){
+			$('#cafeType2').val('미정').attr('selected', 'selected');
+			$('#cafeType2').selectmenu('refresh');
+			$('#cafeRegion2').val('미정').attr('selected', 'selected');
+			$('#cafeRegion2').selectmenu('refresh');
+			$('#cafeScore2').val('0').slider('refresh');
+			form2.reset();
+	   });
+	   $('#btnModifySearch').click( function(){
+			var name = $('#scafeName2').val();
+			selectcafeModify(name);
+	   });
+	   $('#btnUpdate').click( function(){
+			updatecafe();
+		});
+	   $('#btnDelete').click( function(){
+			deletecafe();
+	   });
+	   $('#btnModifyCancel').click( function(){
+			$('#cafeType2').val('미정').attr('selected', 'selected');
+			$('#cafeType2').selectmenu('refresh');
+			$('#cafeRegion2').val('미정').attr('selected', 'selected');
+			$('#cafeRegion2').selectmenu('refresh');
+			$('#cafeScore2').val('0').slider('refresh');
+			form2.reset();
+	   });
+	   $('#btncafeListSearch').click( function(){
+		   selectcafeList();
+	   });
+		$('#btnTakePic1').click( function(){
+			if ($('#cafePic1').val() == ''){
+ 				navigator.notification.alert('사진 이름을 먼저 입력하세요', null, '입력오류');
+			} else {
+				flag='enrol';
+		  		capturePhoto();
+			}
+		});
+	   $('#btnTakePic2').click( function(){
+	   		if ($('#cafePic2').val() == ''){
+        		navigator.notification.alert('사진 이름을 먼저 입력하세요', null, '입력오류');
+			} else {
+		  		flag='modify';
+			   capturePhoto('change');
+	  	 	}
+	   });
+	   $('#btnPicShow').click( function(){
+ 			getcafePic();
+	   });
+	   $('#btnMapShow').click( function(){
+ 			getcafeAddressMap();
+	   });
+	   $('#btnRouteShow').click( function(){
+ 			getcafeRouteMap();
+	   });
+	});
+
+   function initPhoneGap() {
+ 		document.addEventListener('deviceready', onDeviceReady, true);
+	}
+   function onDeviceReady() {
+		navigator.notification.alert('장치 준비됨', null, '폰갭 API');
+	}
+</script>
+<style type="text/css">
+	#logo { display: block; margin: 50px auto; }
+	.my_listview_img { padding:10px; }
+	#btnGroup { margin: 5px 5px; }
+	#picArea { width:100%; height: width*3/4; }
+	#mapArea, #routeArea { width:100%; height: 330px; }
+</style>
+</head>
+
+<body>
+<div data-role="page" id="mainPage">
+    <div data-role="header">
+      <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+      <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+ <h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+  </div>
+	<div data-role="content">
+		<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    <script>
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+      };
+    </script>
+		<ul data-role="listview" data-inset="true" >
+			<li><a href="#cafeEnrolPage">선수 정보 등록</a></li>
+			<li><a href="#cafeModifyPage">선수 정보 수정</a></li>
+			<li><a href="#cafeSearchPage">선수 정보 조회</a></li>
+		</ul>
+		<a href="#cafeSearchPage134"><button>선수  후기 남기러가기</button></a>
+	</div>
+  <!-- 푸터 부분 시작-->
+<div data-role="footer" data-position="fixed">
+<h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+</div>
+<!-- 푸터 부분 종료-->
+
+</div>
+
+<div data-role="page" id="cafeEnrolPage">
+    <div data-role="header">
+      <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+      <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+ <h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+		<div data-role="navbar">
+			<ul>
+			<li><a href="#cafeEnrolPage">선수  등록</a></li>
+			<li><a href="#cafeModifyPage">선수  수정</a></li>
+			<li><a href="#cafeSearchPage">선수  조회</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="content">
+		<form name="form1">
+			<h3>선수 정보 등록</h3>
+			<div class="ui-body ui-body-a gap">
+				<label for="cafeName1">선수명  : </label>
+			 	<input type="text" name="cafeName1" id="cafeName1" data-mini="true"/>
+				<label for="cafeType1" class="select">포지션 :</label>
+				<select name="cafeType1" id="cafeType1" data-native-menu="false" data-mini="true" data-inline="true">
+					<option value="미정">미정</option>
+					<option value="공격수">공격수</option>
+					<option value="미드필더">미드필더</option>
+					<option value="수비수">수비수</option>
+					<option value="골키퍼">골키퍼</option>
+				>
+				</select>
+				<label for="cafeRegion1" class="select">대륙 :</label>
+				<select name="cafeRegion1" id="cafeRegion1" data-native-menu="false" data-mini="true" data-inline="true">
+					<option value="미정">미정</option>
+					<option value="아시아">아시아</option>
+					<option value="유럽">유럽</option>
+					<option value="남아메리카">남아메리카</option>
+					<option value="북아메리카">북아메리카</option>
+					<option value="아프리카">아프리카</option>
+
+				</select>
+				<label for="cafeScore1">평가 : </label>
+				<input type="range" name="cafeScore1" id="cafeScore1" min="0" max="10"/>
+			 	<label for="cafePhone1">주발 : </label>
+				<input type="tel" name="cafePhone1" id="cafePhone1" data-mini="true" placeholder="예) 왼발 or 오른발"/>
+			 	<label for="cafeAddress1">선호포지션</label>
+				<input type="text" name="cafeAddress1" id="cafeAddress1" data-mini="true"/>
+				<label for="cafeMemo1">메모 : </label>
+				<textarea cols="25" rows="5" name="cafeMemo1" id="cafeMemo1" data-mini="true"></textarea>
+				<label for="cafePic1">사진 : </label>
+				<input type="text" name="cafePic1" id="cafePic1" data-mini="true" placeholder=""/>
+				<input type="button" name="takePic1" id="btnTakePic1" value="사진촬영" data-mini="true"/>
+			</div>
+			<div class="ui-body">
+				<fieldset class="ui-grid-a">
+					<div class="ui-block-a">
+	                    <input type="reset" id="btnAddCancel" value="취소"/>
+					</div>
+					<div class="ui-block-b">
+	                    <input type="button" id="btnAdd" value="추가"/>
+					</div>
+				</fieldset>
+			</div>
+		</form>
+	</div>
+  <!-- 푸터 부분 시작-->
+<div data-role="footer" data-position="fixed">
+<h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+</div>
+<!-- 푸터 부분 종료-->
+
+</div>
+
+<div data-role="page" id="cafeModifyPage">
+  <div data-role="header">
+    <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+    <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+<h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+		<div data-role="navbar">
+			<ul>
+			<li><a href="#cafeEnrolPage">선수  등록</a></li>
+			<li><a href="#cafeModifyPage">선수 수정</a></li>
+			<li><a href="#cafeSearchPage">선수 조회</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="content">
+		<form name="form2">
+			<h3>선수정보 수정</h3>
+			<div class="ui-body ui-body-a gap">
+				<label for="scafeName2">선수명  : </label>
+			 	<input type="search" name="scafeName2" id="scafeName2" value="" data-mini="true" />
+				<label for="cafeType2" class="select" >포지션 :</label>
+				<select name="cafeType2" id="cafeType2" data-native-menu="false" data-mini="true" data-inline="true">
+					<option value="미정">미정</option>
+					<option value="공격수">공격수</option>
+					<option value="미드필더">미드필더</option>
+					<option value="수비수">수비수</option>
+					<option value="골키퍼">골키퍼</option>
+
+				</select>
+				<label for="cafeRegion2" class="select">대륙 :</label>
+				<select name="cafeRegion2" id="cafeRegion2" data-native-menu="false" data-mini="true" data-inline="true">
+					<option value="미정">미정</option>
+					<option value="아시아">아시아</option>
+					<option value="유럽">유럽</option>
+					<option value="남아메리카">남아메리카</option>
+					<option value="북아메리카">북아메리카</option>
+					<option value="아프리카">아프리카</option>
+
+				</select>
+				<label for="cafeScore2">평가 : </label>
+				<input type="range" name="cafeScore2" id="cafeScore2" min="0" max="10"/>
+			 	<label for="cafePhone2">주발 : </label>
+				<input type="tel" name="cafePhone2" id="cafePhone2" data-mini="true" placeholder="예) 왼발or오른발"/>
+			 	<label for="cafeAddress2">선호포지션</label>
+				<input type="text" name="cafeAddress2" id="cafeAddress2" data-mini="true"/>
+				<label for="cafeMemo2">메모 : </label>
+				<textarea cols="25" rows="5" name="cafeMemo2" id="cafeMemo2"  data-mini="true"></textarea>
+				<label for="cafePic2">사진 : </label>
+				<input type="text" name="cafePic2" id="cafePic2" data-mini="true" placeholder=""/>
+				<input type="button" name="takePic2" id="btnTakePic2" value="사진재촬영" data-mini="true"/>
+			</div><br/>
+			<div data-role="controlgroup" data-type="horizontal">
+	             <input type="reset" id="btnModifyCancel" value="취소"/>
+		         <input type="button" id="btnUpdate" value="수정"/>
+		         <input type="button" id="btnDelete" value="삭제"/>
+	             <input type="button" id="btnModifySearch" value="검색"/>
+            </div>
+		</form>
+	</div>
+  <!-- 푸터 부분 시작-->
+<div data-role="footer" data-position="fixed">
+<h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+</div>
+<!-- 푸터 부분 종료-->
+
+</div>
+
+<div data-role="page" id="cafeSearchPage">
+  <div data-role="header">
+    <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+    <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+<h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+		<div data-role="navbar">
+			<ul>
+			<li><a href="#cafeEnrolPage">선수  등록</a></li>
+			<li><a href="#cafeModifyPage">선수 수정</a></li>
+			<li><a href="#cafeSearchPage">선수 조회</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="content">
+			<div class="ui-body">
+				<fieldset class="ui-grid-b">
+					<div class="ui-block-a">
+						<select name="cafeType3" id="cafeType3" data-native-menu="false" data-mini="true" data-inline="true">
+							<option>포지션</option>
+							<option value="%">전체</option>
+							<option value="공격수">공격수</option>
+							<option value="미드필더">미드필더</option>
+							<option value="수비수">수비수</option>
+							<option value="골키퍼">골키퍼</option>
+
+						</select>
+					</div>
+					<div class="ui-block-b">
+						<select name="cafeRegion3" id="cafeRegion3" data-native-menu="false" data-mini="true" data-inline="true">
+							<option>대륙</option>
+							<option value="%">전체</option>
+							<option value="아시아">아시아</option>
+							<option value="유럽">유럽</option>
+							<option value="남아메리카">남아메리카</option>
+							<option value="북아메리카">북아메리카</option>
+							<option value="아프리카">아프리카</option>
+
+						</select>
+					</div>
+					<div class="ui-block-c" style="vertical-aligh:top">
+					    <input type="button" id="btncafeListSearch" value="검색" data-mini="true" data-inline="true"/>
+					</div>
+				</fieldset>
+			</div>
+		<ul data-role="listview" id="cafeListArea" data-divider-theme="b" data-inset="true">
+		       <!-- 카페 리스트 표시 영역 -->
+		</ul>
+	</div>
+  <!-- 푸터 부분 시작-->
+<div data-role="footer" data-position="fixed">
+<h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+</div>
+<!-- 푸터 부분 종료-->
+
+</div>
+
+<div data-role="page" id="cafeInfoShowPage">
+  <div data-role="header">
+    <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+    <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+  <h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+		<div data-role="navbar">
+			<ul>
+			<li><a href="#cafeEnrolPage">선수  등록</a></li>
+			<li><a href="#cafeModifyPage">선수 수정</a></li>
+			<li><a href="#cafeSearchPage">선수 조회</a></li>
+			</ul>
+		</div>
+	</div>
+	<div data-role="content">
+		<div id="btnGroup">
+			<span id="btnPicShow"><button data-role="none">사진보기</button></span>
+			<span id="btnRouteShow"><button data-role="none">찾아가기</button></span>
+		</div>
+		<div class="ui-body ui-body-a"><br/>
+			<div id="cafeInfoArea">
+				카페 정보 표시 영역
+			</div>
+		</div>
+	</div>
+  <!-- 푸터 부분 시작-->
+<div data-role="footer" data-position="fixed">
+<h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+</div>
+<!-- 푸터 부분 종료-->
+
+</div>
+
+<div data-role="dialog" id="picShowDialog" data-theme="b">
+	<div data-role="header"  data-theme="b">
+		<h1>선수 사진</h1>
+	</div>
+	<div data-role="content"  data-theme="b">
+		<div id="picName" class="ui-bar ui-bar-a"></div><br/>
+		<div><img id="picArea" src=""/></div>
+	</div>
+</div>
+
+<div data-role="dialog" id="routeShowDialog" data-theme="b">
+	<div data-role="header"  data-theme="b">
+		<h1>선수 경로</h1>
+	</div>
+	<div data-role="content"  data-theme="b">
+		<div id="routeName" class="ui-bar ui-bar-a"></div><br/>
+		<div id="routeArea"></div>
+	</div>
+</div>
+
+
+
+<div data-role="page" id="cafeSearchPage134">
+  <div data-role="header">
+    <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+    <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+<h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+		 <!-- 좌우측의 공간 확보 -->
+		 <div class="container">
+            <hr/>
+            <div class="row">
+                <div class="col-md-10">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr align="center">
+                                <th width="10%">제목</th>
+                                <th width="60%">선수 후기 남기고 가기.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>작성일
+                                </td>
+                                <td>
+                                2018-06-14
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>글쓴이
+                                </td>
+                                <td>
+                                이진규 <span style='float:right'>조회 : 0</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p> 솔직한 선수 후기를 남겨주세요.</p>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="commentTable" class="table table-condensed"></table>
+                    <table class="table table-condensed">
+                        <tr>
+                            <td>
+                                <span class="form-inline" role="form">
+                                    <p>
+                                        <div class="form-group">
+                                            <input type="text" id="commentParentName" name="commentParentName" class="form-control col-lg-2" data-rule-required="true" placeholder="선수이름" maxlength="10">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="commentParentPassword" name="commentParentPassword" class="form-control col-lg-2" data-rule-required="true" placeholder="닉네임" maxlength="10">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" id="commentParentSubmit" name="commentParentSubmit" class="btn btn-default">확인</button>
+                                        </div>
+                                    </p>
+                                        <textarea id="commentParentText" class="form-control col-lg-12" style="width:100%" rows="4"></textarea>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <script>
+
+                        $(function(){
+
+                            //제일 하단에 있는 depth1의 댓글을 다는 이벤트
+                            $("#commentParentSubmit").click(function( event ) {
+
+                                //ajax로 저장하고 성공하면 저장한 데이터를 가져와 넣어야 하는데 여기서는 테스트라 그냥 입력값을 가져옴
+                                var pName = $("#commentParentName");
+                                var pPassword = $("#commentParentPassword");//패스워드를 노출 시켰는데 저장하고 나서 저장한 날짜를 보여줄 예정
+                                var pText = $("#commentParentText");
+
+                                if($.trim(pName.val())==""){
+                                    alert("선수이름을 입력하세요.");
+                                    pName.focus();
+                                    return;
+                                }else if($.trim(pPassword.val())==""){
+                                    alert("닉네임를 입력하세요.");
+                                    pPassword.focus();
+                                    return;
+                                }else if($.trim(pText.val())==""){
+                                    alert("내용을 입력하세요.");
+                                    pText.focus();
+                                    return;
+                                }
+
+                                var commentParentText = '<tr id="r1" name="commentParentCode">'+
+                                                            '<td colspan=2>'+
+                                                                '<strong>'+pName.val()+'</strong> '+pPassword.val()+' <a style="cursor:pointer;" name="pAdd">답글</a> | <a style="cursor:pointer;" name="pDel">삭제</a><p>'+pText.val().replace(/\n/g, "<br>")+'</p>'+
+                                                            '</td>'+
+                                                        '</tr>';
+
+                                //테이블의 tr자식이 있으면 tr 뒤에 붙인다. 없으면 테이블 안에 tr을 붙인다.
+                                if($('#commentTable').contents().size()==0){
+                                    $('#commentTable').append(commentParentText);
+                                }else{
+                                    $('#commentTable tr:last').after(commentParentText);
+                                }
+
+                                $("#commentParentName").val("");
+                                $("#commentParentPassword").val("");
+                                $("#commentParentText").val("");
+
+                            });
+
+                            //댓글의 댓글을 다는 이벤트
+                            $(document).on("click","#commentChildSubmit", function(){
+
+                                var cName = $("#commentChildName");
+                                var cPassword = $("#commentChildPassword");
+                                var cText = $("#commentChildText");
+
+                                if($.trim(cName.val())==""){
+                                    alert("이름을 입력하세요.");
+                                    cName.focus();
+                                    return;
+                                }else if($.trim(cPassword.val())==""){
+                                    alert("패스워드를 입력하세요.");
+                                    cPassword.focus();
+                                    return;
+                                }else if($.trim(cText.val())==""){
+                                    alert("내용을 입력하세요.");
+                                    cText.focus();
+                                    return;
+                                }
+
+                                var commentChildText = '<tr name="commentChildCode">'+
+                                                            '<td style="width:1%"><span class="glyphicon glyphicon-arrow-right"></span></td>'+
+                                                            '<td style="width:99%">'+
+                                                                '<strong>'+cName.val()+'</strong> '+cPassword.val()+' <a style="cursor:pointer;" name="cAdd">답글</a> | <a style="cursor:pointer;" name="cDel">삭제</a>'+
+                                                                '<p>'+cText.val().replace(/\n/g, "<br>")+'</p>'+
+                                                            '</td>'+
+                                                        '</tr>';
+
+                                //앞의 tr노드 찾기
+                                var prevTr = $(this).parent().parent().parent().parent().prev();
+                                //댓글 적는 에디터 삭제
+                                $("#commentEditor").remove();//여기에서 삭제를 해줘야 에디터tr을 안 찾는다.
+
+                                //댓글을 타고 올라가며 부모 tr을 찾음
+                                while(prevTr.attr("name")!="commentParentCode"){
+                                    prevTr = prevTr.prev();
+                                }
+                                //while를 타는지 체크
+                                var check = false;
+                                //다음 노드가 댓글(depth1)의 댓글인지 찾기위해 next
+                                var nextTr = prevTr.next();
+                                //뒤에 댓글(depth1)의 댓글(depth2_1)이 없다면 바로 붙인다.
+                                if(nextTr.attr("name")!="commentChildCode"){
+                                    prevTr.after(commentChildText);
+                                }else{
+                                    //댓글(depth1)의 댓글(depth2_n)이 있는경우 마지막까지 찾는다.
+                                    while(nextTr.attr("name")=="commentChildCode"){
+                                        nextTr = nextTr.next();
+                                        check = true;
+                                    }
+                                }
+
+                                if(check){//댓글(depth1)의 댓글(depth2_n)이 있다면 그 댓글(depth2_n) 뒤에 댓글(depth2_n+1) 추가
+                                    nextTr = nextTr.prev();//while문에서 검색하느라 next로 넘거갔던거 다시 앞으로 돌려줌
+                                    nextTr.after(commentChildText);
+                                }
+
+                            });
+
+                            //답글링크를 눌렀을때 에디터 창을 뿌려주는 이벤트, 삭제링크를 눌렀을때 해당 댓글을 삭제하는 이벤트
+                            $(document).on("click","table#commentTable a", function(){//동적으로 버튼이 생긴 경우 처리 방식
+
+                                if($(this).attr("name")=="pDel"){
+                                    if (confirm("답글을 삭제 하시면 밑에 답글도 모두 삭제 됩니다. 정말 삭제하시겠습니까?") == true){    //확인
+
+                                        var delComment = $(this).parent().parent();
+                                        var nextTr = delComment.next();
+                                        var delTr;
+                                        //댓글(depth1)의 댓글(depth2_1)이 있는지 검사하여 삭제
+                                        while(nextTr.attr("name")=="commentCode"){
+                                            nextTr = nextTr.next();
+                                            delTr = nextTr.prev();//삭제하고 넘기면 삭제되서 없기 때문에 다음값을 가져오기 어려워 다시 앞으로 돌려서 찾은 다음 삭제
+                                            delTr.remove();
+                                        }
+
+                                        delComment.remove();
+
+                                    }else{   //취소
+                                        return;
+                                    }
+                                }else if($(this).attr("name")=="cDel"){
+                                    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+                                        $(this).parent().parent().remove();
+                                    }else{   //취소
+                                        return;
+                                    }
+                                }else{
+                                    //자기 부모의 tr을 알아낸다.
+                                    var parentElement = $(this).parent().parent();
+                                    //댓글달기 창을 없앤다.
+                                    $("#commentEditor").remove();
+                                    //부모의 하단에 댓글달기 창을 삽입
+                                    var commentEditor = '<tr id="commentEditor">'+
+                                                            '<td style="width:1%"> </td>'+
+                                                            '<td>'+
+                                                                '<span class="form-inline" role="form">'+
+                                                                    '<p>'+
+                                                                        '<div class="form-group">'+
+                                                                            '<input type="text" id="commentChildName" name="commentChildName" class="form-control col-lg-2" data-rule-required="true" placeholder="이름" maxlength="10">'+
+                                                                        '</div>'+
+                                                                        '<div class="form-group">'+
+                                                                            ' <input type="password" id="commentChildPassword" name="commentChildPassword" class="form-control col-lg-2" data-rule-required="true" placeholder="패스워드" maxlength="10">'+
+                                                                        '</div>'+
+                                                                        '<div class="form-group">'+
+                                                                            '<button type="button" id="commentChildSubmit" class="btn btn-default">확인</button>'+
+                                                                        '</div>'+
+                                                                    '</p>'+
+                                                                        '<textarea id="commentChildText" name="commentChildText" class="form-control" style="width:98%" rows="4"></textarea>'+
+                                                                '</span>'+
+                                                            '</td>'+
+                                                        '</tr>';
+
+                                    parentElement.after(commentEditor);
+                                }
+
+                            });
+
+                            $( "#list" ).click(function( event ) {
+                                location.href='/community/notice';
+                            });
+                            $( "#modify" ).click(function( event ) {
+                                location.href='/community/modify/notice/${community.id}';
+                            });
+                            $( "#delete" ).click(function( event ) {
+                                location.href='/community/delete/notice/${community.id}';
+                            });
+                            $( "#write" ).click(function( event ) {
+                                location.href='/community/notice/edit';
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+            <hr/>
+        </div>
+		</div>
+</div>
+
+</body>
+</html>

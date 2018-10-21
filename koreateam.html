@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.js"></script>
+
+
+
+    <!--id값마다 해당하는 좌표를 설정하여 구글맵에 띄어주도록 하는 함수-->
+    <script>
+    $(document).ready(function() {
+
+        $("#공격수").hide(); // 공격수
+        $("#미드필더").hide(); // 미드필더
+        $("#수비수").hide(); // 수비수
+        $("#골키퍼").hide(); // 골키퍼
+        $("#감독").hide(); // 감독
+
+      <!-- navbar클릭시 사진 변경 함수-->
+
+          // 공격수 클릭시
+          $('#nav1').click( function(){
+              $("#main").hide(); // 메인 화면 숨기기
+
+              $("#공격수").show(); //공격수 영역 보이기
+              $("#미드필더").hide(); // 미드필더 영역 숨기기
+              $("#수비수").hide(); // 수비수 영역 숨기기
+              $("#골키퍼").hide(); // 골키퍼 영역 숨기기
+              $("#감독").hide(); // 감독 영역 숨기기
+              return false;
+          });
+
+          $('#김신욱').click( function(){
+              $('#공격수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#손흥민').click( function(){
+              $('#공격수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#황희찬').click( function(){
+              $('#공격수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          // 미드필더 클릭시
+          $('#nav2').click( function(){
+              $("#main").hide(); // 메인 화면 숨기기
+              $("#공격수").hide(); //공격수 영역 보이기
+              $("#미드필더").show(); // 미드필더 영역 숨기기
+              $("#수비수").hide(); // 수비수 영역 숨기기
+              $("#골키퍼").hide(); // 골키퍼 영역 숨기기
+              $("#감독").hide(); // 감독 영역 숨기기
+              return false;
+          });
+          $('#구자철').click( function(){
+              $('#미드필더프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#기성용').click( function(){
+              $('#미드필더프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#문선민').click( function(){
+              $('#미드필더프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#이승우').click( function(){
+              $('#미드필더프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#주세종').click( function(){
+              $('#미드필더프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#정우영').click( function(){
+              $('#미드필더프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#이재성').click( function(){
+              $('#미드필더프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+
+          // 수비수 클릭시
+          $('#nav3').click( function(){
+              $("#main").hide(); // 메인 화면 숨기기
+              $("#공격수").hide(); //공격수 영역 보이기
+              $("#미드필더").hide(); // 미드필더 영역 숨기기
+              $("#수비수").show(); // 수비수 영역 숨기기
+              $("#골키퍼").hide(); // 골키퍼 영역 숨기기
+              $("#감독").hide(); // 감독 영역 숨기기
+              return false;
+          });
+          $('#김민우').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#김영권').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#박주호').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#오반석').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#윤영선').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          $('#이용').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#장현수').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#정승현').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#홍철').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#고요한').click( function(){
+              $('#수비수프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          // 골키퍼 클릭시
+          $('#nav4').click( function(){
+              $("#main").hide(); // 메인 화면 숨기기
+              $("#공격수").hide(); //공격수 영역 보이기
+              $("#미드필더").hide(); // 미드필더 영역 숨기기
+              $("#수비수").hide(); // 수비수 영역 숨기기
+              $("#골키퍼").show(); // 골키퍼 영역 숨기기
+              $("#감독").hide(); // 감독 영역 숨기기
+              return false;
+          });
+
+          $('#김승규').click( function(){
+              $('#골키퍼프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#김진현').click( function(){
+              $('#골키퍼프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+          $('#조현우').click( function(){
+              $('#골키퍼프로필').attr("src", $(this).attr("href"));
+              return false;
+          });
+
+          // 감독 클릭시
+          $('#nav5').click( function(){
+            $("#main").hide(); // 메인 화면 숨기기
+              $("#공격수").hide(); //공격수 영역 보이기
+              $("#미드필더").hide(); // 미드필더 영역 숨기기
+              $("#수비수").hide(); // 수비수 영역 숨기기
+              $("#골키퍼").hide(); // 골키퍼 영역 숨기기
+              $("#감독").show(); // 감독 영역 숨기기
+              return false;
+          });
+
+
+
+        });
+
+
+
+    </script>
+
+
+
+
+</head>
+<body>
+
+<div data-role="page">
+
+  <!--헤더 부분 시작-->
+  <div data-role="header">
+    <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+    <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+    <h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+    <div data-role="navbar">
+            <ul>
+                <li><a id="nav1" href="./player/김신욱.png" data-icon="grid">공격수</a></li>
+                <li><a id="nav2" href="javascript:" data-icon="star">미드필더</a></li>
+                <li><a id="nav3" href="javascript:" data-icon="alert">수비수</a></li>
+                <li><a id="nav4" href="javascript:" data-icon="info">골키퍼</a></li>
+                <li><a id="nav5" href="javascript:" data-icon="grid">감독</a></li>
+            </ul>
+        </div>
+
+  </div>
+  <!--헤더 부분 끝-->
+
+  <!--콘텐츠 부분 시작-->
+    <div data-role="content" >
+    <center>
+      <br>
+      <div id="main">
+      <h4>대한민국 축구국가대표 23인명단</h4>
+      <img src="./pic/member.jpg">
+    </div>
+      <div id="공격수">
+     <a href="./player/김신욱프로필.png" id="김신욱"><img src="./player/김신욱.png" width="200px" height="200"></a>
+     <a href="./player/손흥민프로필.png" id="손흥민"><img src="./player/손흥민.png" width="200px" height="200"></a>
+     <a href="./player/황희찬프로필.png" id="황희찬"><img src="./player/황희찬.png" width="200px" height="200"></a><br>
+     <img id= "공격수프로필">
+    </div>
+
+    <div id="미드필더">
+     <a href="./player/구자철프로필.png" id="구자철"><img src="./player/구자철.png" width="200px" height="200"></a>
+     <a href="./player/기성용프로필.png" id="기성용"><img src="./player/기성용.png" width="200px" height="200"></a>
+     <a href="./player/문선민프로필.png" id="문선민"><img src="./player/문선민.png" width="200px" height="200"></a>
+     <a href="./player/이승우프로필.png" id="이승우"><img src="./player/이승우.png" width="200px" height="200"></a>
+     <a href="./player/이재성프로필.png" id="이재성"><img src="./player/이재성.png" width="200px" height="200"></a>
+     <a href="./player/정우영프로필.png" id="정우영"><img src="./player/정우영.png" width="200px" height="200"></a>
+     <a href="./player/주세종프로필.png" id="주세종"><img src="./player/주세종.png" width="200px" height="200"></a><br>
+     <img id= "미드필더프로필">
+    </div>
+
+    <div id="수비수">
+     <a href="./player/고요한프로필.png" id="고요한" ><img id="test"src="./player/고요한.png" width="200px" height="200"></a>
+     <a href="./player/김민우프로필.png" id="김민우"><img id="test"src="./player/김민우.png" width="200px" height="200"></a>
+     <a href="./player/김영권프로필.png" id="김영권"><img id="test"src="./player/김영권.png" width="200px" height="200"></a>
+     <a href="./player/박주호프로필.png" id="박주호"><img id="test"src="./player/박주호.png" width="200px" height="200"></a>
+     <a href="./player/오반석프로필.png" id="오반석"><img id="test"src="./player/오반석.png" width="200px" height="200"></a><br>
+     <a href="./player/윤영선프로필.png" id="윤영선"><img id="test"src="./player/윤영선.png" width="200px" height="200"></a>
+     <a href="./player/이용프로필.png" id="이용"><img id="test"src="./player/이용.png" width="200px" height="200"></a>
+     <a href="./player/장현수프로필.png" id="장현수"><img id="test"src="./player/장현수.png" width="200px" height="200"></a>
+     <a href="./player/정승현프로필.png" id="정승현"><img id="test"src="./player/정승현.png" width="200px" height="200"></a>
+     <a href="./player/홍철프로필.png" id="홍철"><img id="test"src="./player/홍철.png" width="200px" height="200"></a><br>
+     <img id= "수비수프로필">
+    </div>
+
+    <div id="골키퍼">
+     <a href="./player/김승규프로필.png" id="김승규"><img id="test"src="./player/김승규.png" width="200px" height="200"></a>
+     <a href="./player/김진현프로필.png" id="김진현"><img id="test"src="./player/김진현.png" width="200px" height="200"></a>
+     <a href="./player/조현우프로필.png" id="조현우"><img id="test"src="./player/조현우.png" width="200px" height="200"></a><br>
+     <img id= "골키퍼프로필">
+    </div>
+
+
+    <div id="감독">
+     <a href="#" id="신태용"><img src="./player/신태용.png" width="200px" height="200"></a><br><br>
+     <img id="show" src="./player/신태용프로필.png">
+
+    </div>
+
+    <br><br><br><br><br><br><br><br>
+   </center>
+
+        <!-- 콘텐츠 영역 끝-->
+    </div>
+
+    <!--푸터 부분 영역 시작-->
+    <div data-role="footer">
+      <h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+    </div>
+    <!--푸터 부분 영역 끝-->
+
+</div>
+
+
+</body>
+</html>

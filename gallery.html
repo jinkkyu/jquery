@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.css">
+    <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.js"></script>
+
+    <!-- 이미지슬라이드 js 가져오기-->
+    <link rel="stylesheet" href="photoswipe/examples/jquery-mobile.css">
+    <link rel="stylesheet" href="photoswipe/photoswipe.css">
+    <script src="photoswipe/lib/klass.min.js"></script>
+    <script src="photoswipe/code.photoswipe.jquery-3.0.5.min.js"></script>
+    <script src="photoswipe/create_ps_instance.js"></script>
+    <title>Document</title>
+
+
+    <script>
+
+      $(document).ready( function() {
+
+          $("#d-day").hide(); // 입력폼 숨기기
+
+          setViewTime = function (){ //함수로 만들어 준다.
+
+              //아래 부분 입력창에서 가져오지 않고 그냥 셋팅해도 된다.
+              var getYear = $("#year").val();
+              var getMonth = $("#month").val();
+              var getDay = $("#day").val();
+
+              if(getYear.trim() != "" && getMonth.trim() != "" && getDay.trim() != ""){
+
+                  var dat1 = new Date(); //현재날짜
+                  var dat2 = new Date(getYear, getMonth-1, getDay); //월에서 1 빼줘야 함
+
+                  var diff = dat2 - dat1; //날짜 빼기
+
+                  var currSec = 1000; // 밀리세컨
+                  var currMin = 60 * 1000; // 초 * 밀리세컨
+                  var currHour = 60 * 60 * 1000; // 분 * 초 * 밀리세컨
+                  var currDay = 24 * 60 * 60 * 1000; // 시 * 분 * 초 * 밀리세컨
+
+                  var day = parseInt(diff/currDay); //d-day 일
+                  var hour = parseInt(diff/currHour); //d-day 시
+                  var min = parseInt(diff/currMin); //d-day 분
+                  var sec = parseInt(diff/currSec); //d-day 초
+
+                  var viewHour = hour-(day*24);
+                  var viewMin = min-(hour*60);
+                  var viewSec = sec-(min*60);
+
+                  //시분초 말고 일까지만 보여주면 day만 노출하면 된다.
+                  var viewStr = day+"일 "+viewHour+"시 "+viewMin+"분 "+viewSec+"초";
+
+                  $("#dateView").html("<span style='font-size: 13pt;'><b>"+viewStr+"</b></span>");
+
+              }else{
+
+                  $("#dateView").html("<span style='font-size: 13pt;'><b>입력창에 날짜를 입력하세요.</b></span>");
+
+              }
+
+          }
+
+          setInterval('setViewTime()',1000);
+
+      });
+
+    </script>
+</head>
+<body>
+    <div data-role="page" class="gallery-page" id="school_images">
+
+      <!--헤더 부분 시작 -->
+       <div data-role="header" >
+         <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+         <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+    <h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+    <div align="right"><span align="right" style='font-size: 13pt;'><b>월드컵폐막식 D-Day : </b></span><span id="dateView"/></div>
+
+  <div id=d-day>
+  <input type="text" id="year" value="2018" placeholder="년도를 입력하세요."/> -
+  <input type="text" id="month" placeholder="월을 입력하세요." value="7"/> -
+  <input type="text" id="day" placeholder="일을 입력하세요." value="16"/>
+  </div>
+
+       </div>
+       <!-- 헤더 부분 종료 -->
+
+       <!-- 콘텐츠 부분 시작-->
+        <div data-role="content">
+            <ul class="gallery">
+                <li><a href="pic/full/m.jpg" rel="external"><img src="pic/thumb/m.jpg" alt=""></a></li>
+                <li><a href="pic/full/b.jpg" rel="external"><img src="pic/thumb/b.jpg" alt=""></a></li>
+                <li><a href="pic/full/d.jpg" rel="external"><img src="pic/thumb/d.jpg" alt=""></a></li>
+                <li><a href="pic/full/e.jpg" rel="external"><img src="pic/thumb/e.jpg" alt=""></a></li>
+                <li><a href="pic/full/f.jpg" rel="external"><img src="pic/thumb/f.jpg" alt=""></a></li>
+                <li><a href="pic/full/g.jpg" rel="external"><img src="pic/thumb/g.jpg" alt=""></a></li>
+                <li><a href="pic/full/h.jpg" rel="external"><img src="pic/thumb/h.jpg" alt=""></a></li>
+                <li><a href="pic/full/i.jpg" rel="external"><img src="pic/thumb/i.jpg" alt=""></a></li>
+                <li><a href="pic/full/j.jpg" rel="external"><img src="pic/thumb/j.jpg" alt=""></a></li>
+                <li><a href="pic/full/k.jpg" rel="external"><img src="pic/thumb/k.jpg" alt=""></a></li>
+                <li><a href="pic/full/c.jpg" rel="external"><img src="pic/thumb/c.jpg" alt=""></a></li>
+                <li><a href="pic/full/n.jpg" rel="external"><img src="pic/thumb/n.jpg" alt=""></a></li>
+                <li><a href="pic/full/a.jpg" rel="external"><img src="pic/thumb/a.jpg" alt=""></a></li>
+
+            </ul>
+        </div>
+        <!-- 콘텐츠 부분 종료-->
+
+        <!-- 푸터 부분 시작-->
+      <div data-role="footer" >
+   <h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+      </div>
+      <!-- 푸터 부분 종료-->
+    </div>
+</body>
+</html>

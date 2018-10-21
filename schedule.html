@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 부트스트랩 옵션 사용하기위해 불러옴-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+    <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.js"></script>
+
+
+    <!-- 구글맵 js 사용-->
+    <script src="js/jquery.ui.map.js"></script>
+
+    <!--구글맵 화면크기 설정-->
+    <style>
+        .map_style {
+            padding: 0px;
+            height: 480px;
+            width: 300px;
+        }
+    </style>
+
+    <!--id값마다 해당하는 좌표를 설정하여 구글맵에 띄어주도록 하는 함수-->
+    <script>
+
+
+
+        $(function() {
+            var startLatLng = new google.maps.LatLng(56.3375157, 43.9611755);
+            $('#map_canvas1').gmap({
+                "center": startLatLng,
+                "zoom": 16
+            });
+
+            var startLatLng = new google.maps.LatLng(47.2094188, 39.7356078);
+            $('#map_canvas2').gmap({
+                "center": startLatLng,
+                "zoom": 16
+            });
+
+            var startLatLng = new google.maps.LatLng(55.821002, 49.1586594);
+            $('#map_canvas3').gmap({
+                "center": startLatLng,
+                "zoom": 16
+            });
+        });
+
+
+
+
+
+    </script>
+
+
+    <script>
+
+      $(document).ready( function() {
+
+          $("#d-day").hide(); // 입력폼 숨기기
+
+          setViewTime = function (){ //함수로 만들어 준다.
+
+              //아래 부분 입력창에서 가져오지 않고 그냥 셋팅해도 된다.
+              var getYear = $("#year").val();
+              var getMonth = $("#month").val();
+              var getDay = $("#day").val();
+
+              if(getYear.trim() != "" && getMonth.trim() != "" && getDay.trim() != ""){
+
+                  var dat1 = new Date(); //현재날짜
+                  var dat2 = new Date(getYear, getMonth-1, getDay); //월에서 1 빼줘야 함
+
+                  var diff = dat2 - dat1; //날짜 빼기
+
+                  var currSec = 1000; // 밀리세컨
+                  var currMin = 60 * 1000; // 초 * 밀리세컨
+                  var currHour = 60 * 60 * 1000; // 분 * 초 * 밀리세컨
+                  var currDay = 24 * 60 * 60 * 1000; // 시 * 분 * 초 * 밀리세컨
+
+                  var day = parseInt(diff/currDay); //d-day 일
+                  var hour = parseInt(diff/currHour); //d-day 시
+                  var min = parseInt(diff/currMin); //d-day 분
+                  var sec = parseInt(diff/currSec); //d-day 초
+
+                  var viewHour = hour-(day*24);
+                  var viewMin = min-(hour*60);
+                  var viewSec = sec-(min*60);
+
+                  //시분초 말고 일까지만 보여주면 day만 노출하면 된다.
+                  var viewStr = day+"일 "+viewHour+"시 "+viewMin+"분 "+viewSec+"초";
+
+                  $("#dateView").html("<span style='font-size: 13pt;'><b>"+viewStr+"</b></span>");
+
+              }else{
+
+                  $("#dateView").html("<span style='font-size: 13pt;'><b>입력창에 날짜를 입력하세요.</b></span>");
+
+              }
+
+          }
+
+          setInterval('setViewTime()',1000);
+
+      });
+
+    </script>
+
+</head>
+<body>
+
+<div data-role="page" id="map" class="map_style">
+
+
+  <!--헤더 부분 시작 -->
+   <div data-role="header" >
+     <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+     <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+<h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+        <div align="right"><span align="right" style='font-size: 13pt;'><b>월드컵폐막식 D-Day : </b></span><span id="dateView"/></div>
+
+    <div id=d-day>
+    <input type="text" id="year" value="2018" placeholder="년도를 입력하세요."/> -
+     <input type="text" id="month" placeholder="월을 입력하세요." value="7"/> -
+      <input type="text" id="day" placeholder="일을 입력하세요." value="16"/>
+    </div>
+
+
+   </div>
+  <!--헤더 부분 끝-->
+
+  <!--콘텐츠 부분 시작-->
+    <div data-role="content" >
+
+      <div data-role="collapsible-set" data-theme="b" data-content-theme="e">
+
+
+
+   <!-- 1번째 경기 -->
+   <div data-role="collapsible">
+      <h3>대한민국 VS 스웨덴</h3>
+                <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">조</th>
+                <th scope="col">날짜</th>
+                <th scope="col">시간</th>
+                <th scope="col">명단</th>
+                <th scope="col">경기장</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">F</th>
+                <td>6.18(월)</td>
+                <td>21:00(한국기준)</td>
+                <td>대한민국 VS 스웨덴 <a href="http://russia2018.sbs.co.kr"><input type="button" style="width:50px;" value="SBS중계"></a>
+                  <a href="http://www.kbs.co.kr/2018fifaworldcup/"><input type="button" style="width:50px;" value="KBS중계"></a>
+                  <a href="http://2018worldcup.imbc.com"><input type="button" style="width:50px;" value="MBC중계"></a></td>
+                <td>니즈니 노브고로드 스타디움</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+          <div align="center">
+            <img src="./team/korea.jpg">&nbsp;&nbsp;vs&nbsp;&nbsp;<img src="./team/sweden.jpg">
+            <br> 대한민국 &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;스웨덴
+          </div>
+
+
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col-4">전력</th>
+                <th scope="col-2">대한민국</th>
+                <th scope="col-2">스웨덴</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">감독</th>
+                <td>신태용</td>
+                <td>잔느 안데르손</td>
+
+              </tr>
+              <tr>
+                <th scope="row">선수단</th>
+                <td>대한민국 선수단</td>
+                <td>스웨덴 선수단</td>
+              </tr>
+              <tr>
+                <th scope="row">피파랭킹</th>
+                <td>57위</td>
+                <td>24위</td>
+              </tr>
+              <tr>
+                <th scope="row">역대성적</th>
+                <td>0승 2무 2패</td>
+                <td>2승 2무 0패</td>
+              </tr>
+              <tr>
+                <th scope="row">최고성적</th>
+                <td>4위</td>
+                <td>2위</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+          <h4> 경기장 위치 </h4>
+          <center>
+      <p><div id="map_canvas1" class="map_style"></div>
+      </p></div>
+    </center>
+
+      <!-- 2번째 경기 -->
+      <div data-role="collapsible">
+         <h3>대한민국 VS 멕시코</h3>
+         <table class="table">
+           <thead>
+             <tr>
+               <th scope="col">조</th>
+               <th scope="col">날짜</th>
+               <th scope="col">시간</th>
+               <th scope="col">명단</th>
+               <th scope="col">경기장</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <th scope="row">F</th>
+               <td>6.24(일)</td>
+               <td>20:00(한국기준)</td>
+               <td>대한민국 VS 멕시코 <a href="http://russia2018.sbs.co.kr"><input type="button" style="width:50px;" value="SBS중계"></a>
+                 <a href="http://www.kbs.co.kr/2018fifaworldcup/"><input type="button" style="width:50px;" value="KBS중계"></a>
+                 <a href="http://2018worldcup.imbc.com"><input type="button" style="width:50px;" value="MBC중계"></a>
+               </td>
+               <td>로스토프 아레나</td>
+             </tr>
+           </tbody>
+         </table>
+         <div align="center">
+           <img src="./team/korea.jpg">&nbsp;&nbsp;vs&nbsp;&nbsp;<img src="./team/mexico.jpg">
+           <br> 대한민국 &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;멕시코
+         </div>
+
+
+         <table class="table">
+           <thead class="thead-light">
+             <tr>
+               <th scope="col-4">전력</th>
+               <th scope="col-2">대한민국</th>
+               <th scope="col-2">멕시코</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <th scope="row">감독</th>
+               <td>신태용</td>
+               <td>후안 카를로스 오소리오</td>
+
+             </tr>
+             <tr>
+               <th scope="row">선수단</th>
+               <td>대한민국 선수단</td>
+               <td>멕시코 선수단</td>
+             </tr>
+             <tr>
+               <th scope="row">피파랭킹</th>
+               <td>57위</td>
+               <td>15위</td>
+             </tr>
+             <tr>
+               <th scope="row">역대성적</th>
+               <td>4승 2무 6패</td>
+               <td>6승 2무 4패</td>
+             </tr>
+             <tr>
+               <th scope="row">최고성적</th>
+               <td>4위</td>
+               <td>8강</td>
+             </tr>
+           </tbody>
+         </table>
+         <hr>
+         <h4> 경기장 위치 </h4>
+         <center>
+           <p><div id="map_canvas2" class="map_style"></div>
+             </p></div>
+          </center>
+
+      <!-- 3번재경기 -->
+      <div data-role="collapsible">
+      <h3>대한민국 VS 독일</h3>
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">조</th>
+              <th scope="col">날짜</th>
+              <th scope="col">시간</th>
+              <th scope="col">명단</th>
+              <th scope="col">경기장</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">F</th>
+              <td>6.18(월)</td>
+              <td>21:00(한국기준)</td>
+              <td>대한민국 VS 독일 <a href="http://russia2018.sbs.co.kr"><input type="button" style="width:50px;" value="SBS중계"></a>
+                <a href="http://www.kbs.co.kr/2018fifaworldcup/"><input type="button" style="width:50px;" value="KBS중계"></a>
+                <a href="http://2018worldcup.imbc.com"><input type="button" style="width:50px;" value="MBC중계"></a></td>
+              <td>카잔 아레나</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <div align="center">
+          <img src="./team/korea.jpg">&nbsp;&nbsp;vs&nbsp;&nbsp;<img src="./team/germany.jpg">
+          <br> 대한민국 &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;독일
+        </div>
+
+
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col-4">전력</th>
+              <th scope="col-2">대한민국</th>
+              <th scope="col-2">독일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">감독</th>
+              <td>신태용</td>
+              <td>요아힘 뢰브</td>
+
+            </tr>
+            <tr>
+              <th scope="row">선수단</th>
+              <td>대한민국 선수단</td>
+              <td>독일 선수단</td>
+            </tr>
+            <tr>
+              <th scope="row">피파랭킹</th>
+              <td>57위</td>
+              <td>1위</td>
+            </tr>
+            <tr>
+              <th scope="row">역대성적</th>
+              <td>1승 0무 2패</td>
+              <td>2승 0무 1패</td>
+            </tr>
+            <tr>
+              <th scope="row">최고성적</th>
+              <td>4위</td>
+              <td>우승</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <h4> 경기장 위치 </h4>
+        <center>
+        <p><div id="map_canvas3" class="map_style"></div>
+          </p></div>
+        </center>
+
+        </div>
+        <!-- 콘텐츠 영역 끝-->
+    </div>
+
+    <!--푸터 부분 영역 시작-->
+    <div data-role="footer" >
+      <h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+    </div>
+    <!--푸터 부분 영역 끝-->
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.css">
+    <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.js"></script>
+
+<title>2018 러시아 월드컵 안내</title>
+
+<script>
+
+  $(document).ready( function() {
+
+      $("#d-day").hide(); // 입력폼 숨기기
+
+      setViewTime = function (){ //함수로 만들어 준다.
+
+          //아래 부분 입력창에서 가져오지 않고 그냥 셋팅해도 된다.
+          var getYear = $("#year").val();
+          var getMonth = $("#month").val();
+          var getDay = $("#day").val();
+
+          if(getYear.trim() != "" && getMonth.trim() != "" && getDay.trim() != ""){
+
+              var dat1 = new Date(); //현재날짜
+              var dat2 = new Date(getYear, getMonth-1, getDay); //월에서 1 빼줘야 함
+
+              var diff = dat2 - dat1; //날짜 빼기
+
+              var currSec = 1000; // 밀리세컨
+              var currMin = 60 * 1000; // 초 * 밀리세컨
+              var currHour = 60 * 60 * 1000; // 분 * 초 * 밀리세컨
+              var currDay = 24 * 60 * 60 * 1000; // 시 * 분 * 초 * 밀리세컨
+
+              var day = parseInt(diff/currDay); //d-day 일
+              var hour = parseInt(diff/currHour); //d-day 시
+              var min = parseInt(diff/currMin); //d-day 분
+              var sec = parseInt(diff/currSec); //d-day 초
+
+              var viewHour = hour-(day*24);
+              var viewMin = min-(hour*60);
+              var viewSec = sec-(min*60);
+
+              //시분초 말고 일까지만 보여주면 day만 노출하면 된다.
+              var viewStr = day+"일 "+viewHour+"시 "+viewMin+"분 "+viewSec+"초";
+
+              $("#dateView").html("<span style='font-size: 13pt;'><b>"+viewStr+"</b></span>");
+
+          }else{
+
+              $("#dateView").html("<span style='font-size: 13pt;'><b>입력창에 날짜를 입력하세요.</b></span>");
+
+          }
+
+      }
+
+      setInterval('setViewTime()',1000);
+
+  });
+
+</script>
+</head>
+<body>
+
+  <!--메인화면-->
+   <div data-role="page" id="main" >
+
+     <!--헤더 부분 시작 -->
+     <div data-role="header">
+       <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+       <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+        <h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+        <div align="right"><span align="right" style='font-size: 13pt;'><b>월드컵폐막식 D-Day : </b></span><span id="dateView"/></div>
+
+      <div id=d-day>
+      <input type="text" id="year" value="2018" placeholder="년도를 입력하세요."/> -
+      <input type="text" id="month" placeholder="월을 입력하세요." value="7"/> -
+      <input type="text" id="day" placeholder="일을 입력하세요." value="16"/>
+      </div>
+
+     </div>
+      <!-- 헤더 부분 종료 -->
+
+      <!-- 콘텐츠 부분 시작-->
+      <div data-role="content">
+		<ul data-role="listview" data-filter="true" data-filter-placeholder="검색키워드를 입력하세요">
+			<li data-role="listdivider">ㄱ<span class="ui-li-count">0</span></li>
+			<li data-role="listdivider">ㄴ<span class="ui-li-count">1</span></</li>
+            <li><a href="#"><img src="./team/nigeria.jpg">나이지리아</a>
+              피파랭킹 : 48위<br><br>
+              지난성적 : 러시아 월드컵 예선기록 4승 1무 1패, 최고성적 16강(1994, 1998, 2014년), 우승횟수 0회, 이전 월드컵 16강
+            </li>
+
+			<li data-role="listdivider">ㄷ<span class="ui-li-count">3</span></</li>
+      <li><a href="#">
+        <img src="./team/korea.jpg">대한민국</a>
+        피파랭킹 : 57위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 4승 3무 3패, 최고성적 4위(2002년), 우승횟수 0회, 이전 월드컵 본선진출
+      </li>
+
+      <li><a href="#">
+        <img src="./team/denmark.jpg">덴마크</a>
+        피파랭킹 : 12위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 2무 2패, 최고성적 8강(1998년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+
+      <li><a href="#">
+        <img src="./team/germany.jpg">독일</a>
+        피파랭킹 : 1위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 10승 0무 0패, 최고성적 우승(1954, 1974, 1990, 2014년), 우승횟수 4회, 이전 월드컵 우승
+      </li>
+
+      <li data-role="listdivider">ㄹ<span class="ui-li-count">1</span></</li>
+      <li><a href="#">
+        <img src="./team/russia.jpg">러시아</a>
+        피파랭킹 : 70위<br><br>
+        지난성적 : 러시아 월드컵 개최국, 최고성적 4위(1966년), 우승횟수 0회, 이전 월드컵 본선진출
+      </li>
+
+      <li data-role="listdivider">ㅁ<span class="ui-li-count">2</span></</li>
+      <li><a href="#">
+        <img src="./team/mexico.jpg">멕시코</a>
+        피파랭킹 : 15위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 3무 1패, 최고성적 8강(1970, 1986년), 우승횟수 0회, 이전 월드컵 16강
+      </li>
+      <li><a href="#">
+        <img src="./team/morocco.jpg">모로코</a>
+        피파랭킹 : 41위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 3승 3무 0패, 최고성적 16강(1986년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+
+      <li data-role="listdivider">ㅂ<span class="ui-li-count">2</span></</li>
+      <li><a href="#">
+        <img src="./team/brazil.jpg">브라질</a>
+        피파랭킹 : 2위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 12승 5무 1패, 최고성적 우승(1958, 1962, 1970, 1994, 2002년), 우승횟수 5회, 이전 월드컵 4위
+      </li>
+      <li><a href="#">
+        <img src="./team/belgium.jpg">벨기에</a>
+        피파랭킹 : 3위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 9승 1무 0패, 최고성적 4위(1986년), 우승횟수 0회, 이전 월드컵 8강
+      </li>
+
+      <li data-role="listdivider">ㅅ<span class="ui-li-count">5</span></</li>
+      <li><a href="#">
+        <img src="./team/saudiarabia.jpg">사우디아라비아</a>
+        피파랭킹 : 67위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 1무 3패, 최고성적 16강(1994년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+      <li><a href="#">
+        <img src="./team/senegal.jpg">세네갈</a>
+        피파랭킹 : 27위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 4승 2무 0패, 최고성적 8강(2002년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+      <li><a href="#">
+        <img src="./team/sweden.jpg">스웨덴</a>
+        피파랭킹 : 24위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 1무 3패, 최고성적 2위(1958년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+      <li><a href="#">
+        <img src="./team/serbia.jpg">세르비아</a>
+        피파랭킹 : 34위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 3무 1패, 최고성적 4위(1930, 1962년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+      <li><a href="#">
+        <img src="./team/switzerland.jpg">스위스</a>
+        피파랭킹 : 6위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 9승 0무 1패, 최고성적 8강(1934, 1938, 1954년), 우승횟수 0회, 이전 월드컵 16강
+
+      </li>
+      <li><a href="#">
+        <img src="./team/spain.jpg">스페인</a>
+        피파랭킹 : 10위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 9승 1무 0패, 최고성적 우승(2010년), 우승횟수 1회, 이전 월드컵 본선진출
+      </li>
+
+      <li data-role="listdivider">ㅇ<span class="ui-li-count">7</span></</li>
+      <li><a href="#">
+        <img src="./team/argentina.jpg">아르헨티나</a>
+        피파랭킹 : 5위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 7승 7무 4패, 최고성적 우승(1978, 1986년), 우승횟수 2회, 이전 월드컵 2위
+      </li>
+      <li><a href="#">
+        <img src="./team/iceland.jpg">아이슬란드</a>
+        피파랭킹 : 22위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 7승 1무 2패, 최고성적 첫진출(2018년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+      <li><a href="#">
+        <img src="./team/uruguay.jpg">우루과이</a>
+        피파랭킹 : 14위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 9승 4무 5패, 최고성적 우승(1930, 1950년), 우승횟수 2회, 이전 월드컵 16강
+      </li>
+      <li><a href="#">
+        <img src="./team/iran.jpg">이란</a>
+        피파랭킹 : 37위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 4무 0패, 최고성적 본선진출(1978, 1998, 2006, 2014년), 우승횟수 0회, 이전 월드컵 본선진출
+      </li>
+      <li><a href="#">
+        <img src="./team/egypt.jpg">이집트</a>
+        피파랭킹 : 45위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 4무 0패, 최고성적 본선진출(1978, 1998, 2006, 2014년), 우승횟수 0회, 이전 월드컵 본선진출
+      </li>
+      <li><a href="#">
+        <img src="./team/japan.jpg">일본</a>
+        피파랭킹 : 61위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 2무 2패, 최고성적 16강(2002, 2010년), 우승횟수 0회, 이전 월드컵 본선진출
+      </li>
+      <li><a href="#">
+        <img src="./team/england.jpg">잉글랜드</a>
+        피파랭킹 : 12위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 8승 2무 0패, 최고성적 우승(1966년), 우승횟수 1회, 이전 월드컵 본선진출
+      </li>
+
+      <li data-role="listdivider">ㅈ<span class="ui-li-count">0</span></</li>
+      <li data-role="listdivider">ㅊ<span class="ui-li-count">0</span></</li>
+      <li data-role="listdivider">ㅋ<span class="ui-li-count">3</span></</li>
+      <li><a href="#">
+        <img src="./team/costarica.jpg">코스타리카</a>
+        피파랭킹 : 23위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 4승 4무 2패, 최고성적 8강(2014년), 우승횟수 0회, 이전 월드컵 8강
+      </li>
+      <li><a href="#">
+        <img src="./team/colombia.jpg">콜롬비아</a>
+        피파랭킹 : 16위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 7승 6무 5패, 최고성적 8강(2014년), 우승횟수 0회, 이전 월드컵 8강
+      </li>
+      <li><a href="#">
+        <img src="./team/croatia.jpg">크로아티아</a>
+        피파랭킹 : 20위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 6승 2무 2패, 최고성적 3위(1998년), 우승횟수 0회, 이전 월드컵 본선진출
+      </li>
+
+      <li data-role="listdivider">ㅍ<span class="ui-li-count">4</span></</li>
+      <li><a href="#">
+        <img src="./team/panama.jpg">파나마</a>
+        피파랭킹 : 55위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 3승 4무 3패, 최고성적 첫진출(2018년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+      <li><a href="#">
+        <img src="./team/portugal.jpg">포르투갈</a>
+        피파랭킹 : 4위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 9승 0무 1패, 최고성적 3위(1966년), 우승횟수 0회, 이전 월드컵 본선진출
+      </li>
+      <li><a href="#">
+        <img src="./team/poland.jpg">폴란드</a>
+        피파랭킹 : 8위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 8승 1무 1패, 최고성적 3위(1974, 1982년), 우승횟수 0회, 이전 월드컵 미진출
+      </li>
+      <li><a href="#">
+        <img src="./team/france.jpg">프랑스</a>
+        피파랭킹 : 7위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 7승 2무 1패, 최고성적 우승(1998년), 우승횟수 1회, 이전 월드컵 8강
+      </li>
+
+      <li data-role="listdivider">ㅌ<span class="ui-li-count">0</span></</li>
+
+      <li data-role="listdivider">ㅎ<span class="ui-li-count">1</span></</li>
+			<li><a href="#">
+        <img src="./team/australia.jpg">호주</a>
+        피파랭킹 : 36위<br><br>
+        지난성적 : 러시아 월드컵 예선기록 5승 4무 1패, 최고성적 16강(2006년), 우승횟수 0회, 이전 월드컵 본선진출
+      </li>
+		</ul>
+	</div>
+        <!-- 콘텐츠 부분 종료-->
+
+        <!-- 푸터 부분 시작-->
+      <div data-role="footer" data-position="fixed">
+   <h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+      </div>
+      <!-- 푸터 부분 종료-->
+
+   </div>
+
+</div>
+</body>
+</html>

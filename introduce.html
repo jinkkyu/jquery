@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.css">
+    <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.js"></script>
+
+
+    <title>2018 러시아 월드컵 안내</title>
+
+
+    <!-- d-day-->
+    <script>
+
+      $(document).ready( function() {
+
+          $("#d-day").hide(); // 입력폼 숨기기
+
+          setViewTime = function (){ //함수로 만들어 준다.
+
+              //아래 부분 입력창에서 가져오지 않고 그냥 셋팅해도 된다.
+              var getYear = $("#year").val();
+              var getMonth = $("#month").val();
+              var getDay = $("#day").val();
+
+              if(getYear.trim() != "" && getMonth.trim() != "" && getDay.trim() != ""){
+
+                  var dat1 = new Date(); //현재날짜
+                  var dat2 = new Date(getYear, getMonth-1, getDay); //월에서 1 빼줘야 함
+
+                  var diff = dat2 - dat1; //날짜 빼기
+
+                  var currSec = 1000; // 밀리세컨
+                  var currMin = 60 * 1000; // 초 * 밀리세컨
+                  var currHour = 60 * 60 * 1000; // 분 * 초 * 밀리세컨
+                  var currDay = 24 * 60 * 60 * 1000; // 시 * 분 * 초 * 밀리세컨
+
+                  var day = parseInt(diff/currDay); //d-day 일
+                  var hour = parseInt(diff/currHour); //d-day 시
+                  var min = parseInt(diff/currMin); //d-day 분
+                  var sec = parseInt(diff/currSec); //d-day 초
+
+                  var viewHour = hour-(day*24);
+                  var viewMin = min-(hour*60);
+                  var viewSec = sec-(min*60);
+
+                  //시분초 말고 일까지만 보여주면 day만 노출하면 된다.
+                  var viewStr = day+"일 "+viewHour+"시 "+viewMin+"분 "+viewSec+"초";
+
+                  $("#dateView").html("<span style='font-size: 13pt;'><b>"+viewStr+"</b></span>");
+
+              }else{
+
+                  $("#dateView").html("<span style='font-size: 13pt;'><b>입력창에 날짜를 입력하세요.</b></span>");
+
+              }
+
+          }
+
+          setInterval('setViewTime()',1000);
+
+      });
+
+    </script>
+
+
+</head>
+<body>
+  <div data-role="page" id="main" >
+
+    <!--헤더 부분 시작 -->
+     <div data-role="header">
+       <a href="#" data-icon="back" data-rel="back" data-direction="reverse">Back</a>
+       <a href="index.html" data-icon="home" rel="external" class="ui-btn-right">Home</a>
+  <h1 textsize="10px"><a href="index.html" rel="external" > <img src="./pic/logo2.png" width="70px" height="70px"></a><br><hr>2018 러시아 월드컵 안내</h1>
+
+  <div align="right"><span align="right" style='font-size: 13pt;'><b>월드컵폐막식 D-Day : </b></span><span id="dateView"/></div>
+
+<div id=d-day>
+<input type="text" id="year" value="2018" placeholder="년도를 입력하세요."/> -
+<input type="text" id="month" placeholder="월을 입력하세요." value="7"/> -
+<input type="text" id="day" placeholder="일을 입력하세요." value="16"/>
+</div>
+
+     </div>
+     <!--헤더 부분 종료 -->
+
+  <!-- 콘텐츠 부분 시작-->
+  <div data-role="content">
+    <center>
+
+      <!-- 2018 러시아 월드컵 홍보 영상 -->
+      <video width="320" height="240" controls autoplay>
+          <source src="video/FIFA World Cup.mp4" type="video/mp4">
+      </video>
+
+      <!-- 2018 러시아 월드컵 공식 홈페이지 -->
+     <br><a href="https://www.fifa.com/worldcup/"  target="_blank" > 러시아 월드컵 공식 홈페이지 </a>
+
+   </center>
+     <div data-role="collapsible-set" data-theme="b" data-content-theme="e">
+
+  <!-- 역대 월드컵 우승팀 -->
+  <div data-role="collapsible" data-collapsed="false">
+     <h3>역대 월드컵 우승팀</h3>
+     <center>
+     <p><img src="./pic/history.png" width="320px"></p>
+     <div align="left">
+       1위 : 브라질 - 5회 <br>(1958년, 1962년, 1970년, 1994년, 2002년)<br><br>
+      2위 : 독일 - 4회 <br> (1954년, 1974년, 1990년, 2014년)<br><br>
+      2위 : 이탈리아 - 4회 <br> (1934년, 1938년, 1982년, 2006년)<br><br>
+      4위 : 아르헨티나 - 2회 <br> (1978년, 1986년)<br><br>
+      4위 : 우루과이 - 2회 <br> (1930년, 1950년)<br><br>
+      6위 : 스페인 - 1회 <br> (2010년)<br><br>
+      6위 : 프랑스 - 1회 <br> (1998년)<br><br>
+      6위 : 잉글랜드 - 1회 <br> (1966년)<br><br>
+    </div>
+      </center>
+     </div>
+
+  <!-- 2018 러시아 월드컵 마스코트-->
+  <div data-role="collapsible">
+     <h3>2018 러시아 월드컵 마스코트</h3>
+     <p><h5>마스코트 : 자비바카(Zabivaka)</h5><br><img src="./pic/mascot.gif" width="300px" height="300px"> <br>
+        2018 FIFA 러시아 월드컵 마스코트는<br> 자비바카(Zabivaka)가 선정이 되었다.<br>
+        월드컵 마스코트는 대부분 동물을<br> 의인화 하여 제작하고 있는데 <br>이번에는
+        늑대를 의인화하여 제작 되었다.
+     </p></div>
+
+     <!-- 2018 러시아 월드컵 공인구-->
+     <div data-role="collapsible">
+        <h3>2018 러시아 월드컵 공인구</h3>
+        <p><h5>공인구 : 텔스타18</h5><br><img src="./pic/ball.jpg" width="300px" height="300px"> <br>
+          2018 FIFA 러시아 월드컵 공인구는 "텔스타 18"에 대해 소개하고자 한다.<br>
+          텔스타 18은 과거 1970 멕시코 월드컵 때 사용했던 "텔스타"을 현대적인 디자인으로<br>
+          재탄생한 공인구라고 볼 수 있다.
+        </p></div>
+
+           <!-- 조편성 -->
+           <div data-role="collapsible">
+              <h3>2018 러시아 조편성</h3>
+
+              <p><h5>조편성</h5><br><img src="./pic/group.jpg" width="300px" height="300px"> <br>
+
+              </p></div>
+
+       </div>
+        </div>
+        <!-- 콘텐츠 부분 종료-->
+
+          <!-- 푸터 부분 시작-->
+       <div data-role="footer" data-position="fixed">
+    <h2> Copyright © 2018년 분산컴퓨팅 기말프로젝트 <br><h3> 2018 러시아 월드컵 안내 - 20130953 이진규</h3>  </h2>
+       </div>
+         <!-- 푸터 부분 종료-->
+
+</div>
+</body>
+</html>
